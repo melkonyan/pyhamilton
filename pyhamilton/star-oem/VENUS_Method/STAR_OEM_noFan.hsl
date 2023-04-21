@@ -15,12 +15,14 @@
  namespace _Method { #include "Hamilton pH Module\\Hamilton pH Station Dryer Module.hsl" } 
  namespace _Method { #include "STAR_OEM_toolkit_centrifuge.hs_" } 
  namespace _Method { #include "STAR_OEM_toolkit_MPE.hs_" } 
+ namespace _Method { #include "Hamilton pH Module Controller.hs_" } 
+#include "STAR_OEM_Test.res"
+ namespace _Method { #include "C:\\Users\\Roboter\\src\\pyhamilton_test\\pyhamilton\\pyhamilton\\star-oem\\BioTekGen5\\BioTekGen5.hs_" } 
  namespace _Method { #include "Hamilton pH Module\\Hamilton pH Module.hsl" } 
  namespace _Method { #include "Hamilton pH Module\\Hamilton pH Station Washer Module.hsl" } 
  namespace _Method { #include "Hamilton MPE2\\HSLMPELib.hsl" } 
  namespace _Method { #include "Hamilton Centrifuge\\Hamilton Centrifuge.hsl" } 
- namespace _Method { #include "Hamilton pH Module Controller.hs_" } 
-#include "STAR_OEM_Test.res"
+ namespace _Method { #include "ASWStandard\\ASWGlobal\\ASWGlobal.hsl" } 
 /* {{ 2 "LibraryInsertLine" "" */ // }} ""
 variable loopCounterMain;
 variable msg;
@@ -317,6 +319,10 @@ variable seqMeasure;
 variable ProbePattern;
 variable seqMeasurement;
 variable MeasurePositions;
+variable plateReader_doorAction;
+variable DoorAction;
+variable plateReader_simulate;
+variable plateReader_result;
 /* {{ 2 "VariableInsertLine" "" */ // }} ""
 // {{ 2 "TemplateIncludeBlock" ""
  namespace _Method { #include "HSLMETEDLib.hs_" } 
@@ -338,6 +344,7 @@ STAR_OEM_TOOLKIT_PH::_InitLibrary();
 STAR_OEM_TOOLKIT_CENTRIFUGE::_InitLibrary();
 STAR_OEM_TOOLKIT_MPE::_InitLibrary();
 HAMILTON_PH_MODULE_CONTROLLER::_InitLibrary();
+BIOTEKGEN5::_InitLibrary();
 ::RegisterAbortHandler( "OnAbort");
 // }} ""
 // {{{ 1 1 0 "e7768ad9_4016_4422_bd83f5785d03ceda" "{C1F3C015-47B3-4514-9407-AC2E65043419}"
@@ -357,7 +364,7 @@ return;
 }
 // }} ""
 // {{{ 6 1 0 "ee92e29b_e94c_46cf_a67851f3be61c805" "{7C4EF7A7-39BE-406a-897F-71F3A35B4093}"
-SendTextMessageToServer(Translate("Hi, I�m a VENUS method."));
+SendTextMessageToServer(Translate("Hi, Iï¿½m a VENUS method."));
 // }} ""
 // {{ 7 1 0 "b573bcbb_6bb4_4b28_b1ca14b0d3cad22e" "{B31F3532-5D80-11d4-A5EB-0050DA737D89}"
 {
@@ -6709,33 +6716,89 @@ SendHHSReturnToServer(commandFromServer, o_stepReturn, Translate(""), Translate(
 // {{ 2001 1 0 "1e8b0bba_85dd_48f7_a69e247338f695c8" "{586C3429-F931-405f-9938-928E22C90BFA}"
 
 // }} ""
-// {{{ 2002 1 0 "1a2f39c8_cc2e_4c18_bcae9dc5be30d2e2" "{C1F3C015-47B3-4514-9407-AC2E65043419}"
-HSLJsonLib::Release(objJSONFromServer);
-// }} ""
-// {{ 2003 1 0 "17c082ea_8224_4d43_86dc6db5af649261" "{586C3429-F931-405f-9938-928E22C90BFA}"
+// {{ 2002 1 0 "43b5f469_a085_44af_bd46b609cb54981e" "{586C3429-F931-405f-9938-928E22C90BFA}"
 
 // }} ""
-// {{ 2004 1 0 "05e3e61b_1dfb_4c6d_a8dbb000a5bbb5a3" "{B31F3531-5D80-11d4-A5EB-0050DA737D89}"
+// {{ 2003 1 0 "8c0542c5_3148_4547_921d8145a3cb8625" "{586C3429-F931-405f-9938-928E22C90BFA}"
+
+// }} ""
+// {{ 2004 1 0 "0854f722_339b_43f0_8366ffb4cc6ff865" "{B31F3531-5D80-11d4-A5EB-0050DA737D89}"
+if (commandFromServer == "BioTekGen5_Initialize")
+{
+// }} ""
+// {{{ 2005 1 0 "b6aad228_2b0b_4d3f_a5eed912d71b4e98" "{C1F3C015-47B3-4514-9407-AC2E65043419}"
+HSLJsonLib::GetBooleanProperty(objJSONFromServer, Translate("Simulate"), plateReader_simulate);
+// }} ""
+// {{{ 2006 1 0 "d665be30_83bc_44f3_938bfbc93280b127" "{7C4EF7A7-39BE-406a-897F-71F3A35B4093}"
+BIOTEKGEN5::Initialize(2, plateReader_simulate);
+// }} ""
+// {{ 2007 1 0 "a92a8a1f_7402_4c40_ab712b87ab21594c" "{B31F3543-5D80-11d4-A5EB-0050DA737D89}"
+o_stepReturn = 1;
+// }} ""
+// {{{ 2008 1 0 "4d7665b8_91fd_4733_83e91433f2f7cfd6" "{7C4EF7A7-39BE-406a-897F-71F3A35B4093}"
+SendHHSReturnToServer(commandFromServer, o_stepReturn, Translate(""), Translate(""), Translate(""), id);
+// }} ""
+// {{ 2009 1 0 "0854f722_339b_43f0_8366ffb4cc6ff865" "{B31F3531-5D80-11d4-A5EB-0050DA737D89}"
+}
+// }} ""
+// {{ 2010 1 0 "8c0542c5_3148_4547_921d8145a3cb8625" "{586C3429-F931-405f-9938-928E22C90BFA}"
+
+// }} ""
+// {{ 2011 1 0 "865d06cf_99dc_44fc_9cc672c7cd6e31e6" "{586C3429-F931-405f-9938-928E22C90BFA}"
+
+// }} ""
+// {{ 2012 1 0 "6452fde6_b518_4ba5_bd6a2a2c12cda7df" "{B31F3531-5D80-11d4-A5EB-0050DA737D89}"
+if (commandFromServer == "BioTekGen5_Door")
+{
+// }} ""
+// {{{ 2013 1 0 "bbf9562c_04cb_4b86_a759b1d33d1ccc2d" "{C1F3C015-47B3-4514-9407-AC2E65043419}"
+HSLJsonLib::GetBooleanProperty(objJSONFromServer, Translate("DoorAction"), plateReader_doorAction);
+// }} ""
+// {{{ 2014 1 0 "057750af_9096_4c44_be81091885456ff0" "{7C4EF7A7-39BE-406a-897F-71F3A35B4093}"
+plateReader_result = BIOTEKGEN5::Door(plateReader_doorAction);
+// }} ""
+// {{{ 2015 1 0 "416209cf_abbf_4ef7_8c56b6c0bb5dab08" "{7C4EF7A7-39BE-406a-897F-71F3A35B4093}"
+o_stepReturn = BoolToInt(plateReader_result);
+// }} ""
+// {{{ 2016 1 0 "cde6734d_4a32_41bc_9509d379b4c00123" "{7C4EF7A7-39BE-406a-897F-71F3A35B4093}"
+SendHHSReturnToServer(commandFromServer, o_stepReturn, Translate(""), Translate(""), Translate(""), id);
+// }} ""
+// {{ 2017 1 0 "6452fde6_b518_4ba5_bd6a2a2c12cda7df" "{B31F3531-5D80-11d4-A5EB-0050DA737D89}"
+}
+// }} ""
+// {{ 2018 1 0 "865d06cf_99dc_44fc_9cc672c7cd6e31e6" "{586C3429-F931-405f-9938-928E22C90BFA}"
+
+// }} ""
+// {{ 2019 1 0 "43b5f469_a085_44af_bd46b609cb54981e" "{586C3429-F931-405f-9938-928E22C90BFA}"
+
+// }} ""
+// {{{ 2020 1 0 "1a2f39c8_cc2e_4c18_bcae9dc5be30d2e2" "{C1F3C015-47B3-4514-9407-AC2E65043419}"
+HSLJsonLib::Release(objJSONFromServer);
+// }} ""
+// {{ 2021 1 0 "17c082ea_8224_4d43_86dc6db5af649261" "{586C3429-F931-405f-9938-928E22C90BFA}"
+
+// }} ""
+// {{ 2022 1 0 "05e3e61b_1dfb_4c6d_a8dbb000a5bbb5a3" "{B31F3531-5D80-11d4-A5EB-0050DA737D89}"
 if (commandFromServer == "end")
 {
 // }} ""
-// {{{ 2005 1 0 "6db67a5a_6aa2_4087_875823acfff0fac4" "{7C4EF7A7-39BE-406a-897F-71F3A35B4093}"
+// {{{ 2023 1 0 "6db67a5a_6aa2_4087_875823acfff0fac4" "{7C4EF7A7-39BE-406a-897F-71F3A35B4093}"
 SendTextMessageToServer(Translate("Good Bye!"));
 // }} ""
-// {{ 2006 1 0 "4c7e40d6_02a6_451d_b28230ec71e40ce1" "{B31F3533-5D80-11d4-A5EB-0050DA737D89}"
+// {{ 2024 1 0 "4c7e40d6_02a6_451d_b28230ec71e40ce1" "{B31F3533-5D80-11d4-A5EB-0050DA737D89}"
 break;
 // }} ""
-// {{ 2007 1 0 "05e3e61b_1dfb_4c6d_a8dbb000a5bbb5a3" "{B31F3531-5D80-11d4-A5EB-0050DA737D89}"
+// {{ 2025 1 0 "05e3e61b_1dfb_4c6d_a8dbb000a5bbb5a3" "{B31F3531-5D80-11d4-A5EB-0050DA737D89}"
 }
 // }} ""
-// {{ 2008 1 0 "17c082ea_8224_4d43_86dc6db5af649261" "{586C3429-F931-405f-9938-928E22C90BFA}"
+// {{ 2026 1 0 "17c082ea_8224_4d43_86dc6db5af649261" "{586C3429-F931-405f-9938-928E22C90BFA}"
 
 // }} ""
-// {{ 2009 1 0 "b573bcbb_6bb4_4b28_b1ca14b0d3cad22e" "{B31F3532-5D80-11d4-A5EB-0050DA737D89}"
+// {{ 2027 1 0 "b573bcbb_6bb4_4b28_b1ca14b0d3cad22e" "{B31F3532-5D80-11d4-A5EB-0050DA737D89}"
 }
 }
 // }} ""
-// {{{ 2010 1 0 "6fb90145_24c3_46ba_88b839e0215d0bf2" "{C1F3C015-47B3-4514-9407-AC2E65043419}"
+// {{{ 2028 1 0 "6fb90145_24c3_46ba_88b839e0215d0bf2" "{C1F3C015-47B3-4514-9407-AC2E65043419}"
 HSLHttp::Release(objHttp);
 // }} ""
 // {{ 2 "AutoExitBlock" ""
@@ -6744,10 +6807,11 @@ STAR_OEM_TOOLKIT_PH::_ExitLibrary();
 STAR_OEM_TOOLKIT_CENTRIFUGE::_ExitLibrary();
 STAR_OEM_TOOLKIT_MPE::_ExitLibrary();
 HAMILTON_PH_MODULE_CONTROLLER::_ExitLibrary();
+BIOTEKGEN5::_ExitLibrary();
 // }} ""
 // {{{ 5 "main" "End"
 } }
 // }} ""
 
 
-// $$author=stefa$$valid=0$$time=2023-03-08 11:14$$checksum=2e8407de$$length=082$$
+// $$author=Roboter$$valid=0$$time=2023-04-21 14:24$$checksum=9dc786aa$$length=084$$

@@ -89,7 +89,9 @@ class HamiltonCmdTemplate:
             raise ValueError(prefix + 'command name "' + cmd_dict['command'] + '" does not match')
         needs = set(['command', 'id'])
         needs.update(self.params_list)
+        print(needs)
         givens = set(cmd_dict.keys())
+        print(givens)
         if givens != needs:
             prints = [prefix + 'template parameter keys (left) do not match given keys (right)\n']
             q_mark = ' (?)  '

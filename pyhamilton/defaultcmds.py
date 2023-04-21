@@ -847,7 +847,7 @@ defaults_by_cmd = { # 'field':None indicates field is required when assembling c
 
     'BioTekGen5_Initialize': ('BIOTEKGEN5_INITIALIZE', 
         {
-        'Initialize': '', # (bool)
+        'Simulate': '', # (bool)
     }),
     
     'BioTekGen5_Door': ('BIOTEKGEN5_DOOR', {
