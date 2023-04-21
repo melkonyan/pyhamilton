@@ -395,7 +395,7 @@ class HamiltonResponse:
         if isSuccessStatus:
             return
         
-        isHamiltonStepError = HamiltonResponseStatus.FAILED and '[' not in self.raw
+        isHamiltonStepError = self.status == HamiltonResponseStatus.FAILED and '[' not in self.raw
         if isHamiltonStepError:
             raise HamiltonStepError('Hamilton step did not execute correctly; no error code given. ( response: ' + self.raw + ' )')
 

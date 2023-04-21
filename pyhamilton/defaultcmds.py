@@ -845,6 +845,15 @@ defaults_by_cmd = { # 'field':None indicates field is required when assembling c
         'DryTime':'', # (int)
     }),
 
+    'BioTekGen5_Initialize': ('BIOTEKGEN5_INITIALIZE', 
+        {
+        'Initialize': '', # (bool)
+    }),
+    
+    'BioTekGen5_Door': ('BIOTEKGEN5_DOOR', {
+        'DoorAction':'', # (bool)
+    }),
+
 }
 
 
