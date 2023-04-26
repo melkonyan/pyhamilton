@@ -17,7 +17,7 @@
  namespace _Method { #include "STAR_OEM_toolkit_MPE.hs_" } 
  namespace _Method { #include "Hamilton pH Module Controller.hs_" } 
 #include "STAR_OEM_Test.res"
- namespace _Method { #include "C:\\Users\\Roboter\\src\\pyhamilton_test\\pyhamilton\\pyhamilton\\star-oem\\BioTekGen5\\BioTekGen5.hs_" } 
+ namespace _Method { #include "C:\\Users\\Roboter\\src\\pyhamilton\\pyhamilton\\star-oem\\BioTekGen5\\BioTekGen5.hs_" } 
  namespace _Method { #include "Hamilton pH Module\\Hamilton pH Module.hsl" } 
  namespace _Method { #include "Hamilton pH Module\\Hamilton pH Station Washer Module.hsl" } 
  namespace _Method { #include "Hamilton MPE2\\HSLMPELib.hsl" } 
@@ -6814,4 +6814,4 @@ BIOTEKGEN5::_ExitLibrary();
 // }} ""
 
 
-// $$author=Roboter$$valid=0$$time=2023-04-21 14:24$$checksum=9dc786aa$$length=084$$
+// $$author=Roboter$$valid=0$$time=2023-04-26 12:28$$checksum=61ed7a6e$$length=084$$

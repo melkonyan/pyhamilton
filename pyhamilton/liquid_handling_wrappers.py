@@ -64,15 +64,14 @@ def wash_empty_refill(ham, asynch=False, **more_options):
     return cmd
 
 
-def move_plate(ham, source_plate, target_plate, CmplxGetDict = None, CmplxPlaceDict = None, **more_options):
-    
+def move_plate(ham, source_plate, target_plate, CmplxGetDict = None, CmplxPlaceDict = None, getInverseGrip=0, getOrientation=1, placeOrientation=1, timeout=120, **more_options):
+    """ Moves a plate using iSWAP """
     logging.info('move_plate: Moving plate ' + source_plate.layout_name() + ' to ' + target_plate.layout_name())
     src_pos = labware_pos_str(source_plate, 0)
     trgt_pos = labware_pos_str(target_plate, 0)
-    try_inversions=(0,1)
     
-    getCmplxMvmnt, getRetractDist, getLiftUpHeight, getOrientation = (0, 0.0, 20.0, 1)
-    placeCmplxMvmnt, placeRetractDist, placeLiftUpHeight, placeOrientation = (0, 0.0, 20.0, 1)
+    getCmplxMvmnt, getRetractDist, getLiftUpHeight, getOrientation = (0, 0.0, 20.0, getOrientation)
+    placeCmplxMvmnt, placeRetractDist, placeLiftUpHeight, placeOrientation = (0, 0.0, 20.0, placeOrientation)
     
     
     if CmplxGetDict:
@@ -87,23 +86,20 @@ def move_plate(ham, source_plate, target_plate, CmplxGetDict = None, CmplxPlaceD
         placeLiftUpHeight = CmplxPlaceDict['liftUpHeight']
         placeOrientation = CmplxPlaceDict['labwareOrientation']
         
-    for inv in try_inversions:
-        cid = ham.send_command(ISWAP_GET, 
-                               plateLabwarePositions=src_pos, 
-                               inverseGrip=inv, 
-                               movementType = getCmplxMvmnt,
-                               retractDistance = getRetractDist,
-                               liftUpHeight = getLiftUpHeight,
-                               labwareOrientation = getOrientation,
-                               **more_options
-                               )
-        try:
-            ham.wait_on_response(cid, raise_first_exception=True, timeout=120)
-            break
-        except PositionError:
-            print("trying inverse")
-            pass
-
+    cid = ham.send_command(ISWAP_GET, 
+                        plateLabwarePositions=src_pos, 
+                        inverseGrip=getInverseGrip, 
+                        movementType = getCmplxMvmnt,
+                        retractDistance = getRetractDist,
+                        liftUpHeight = getLiftUpHeight,
+                        labwareOrientation = getOrientation,
+                        **more_options
+                        )
+    try:
+        ham.wait_on_response(cid, raise_first_exception=True, timeout=timeout)
+    except PositionError:        
+        raise IOError
+    
     cid = ham.send_command(ISWAP_PLACE, 
                            plateLabwarePositions=trgt_pos, 
                            movementType = placeCmplxMvmnt, 
@@ -112,7 +108,7 @@ def move_plate(ham, source_plate, target_plate, CmplxGetDict = None, CmplxPlaceD
                            labwareOrientation = placeOrientation
                            )
     try:
-        ham.wait_on_response(cid, raise_first_exception=True, timeout=120)
+        ham.wait_on_response(cid, raise_first_exception=True, timeout=timeout)
     except PositionError:
         raise IOError
 
@@ -271,13 +267,13 @@ def tilt_module_move(ham_int, module_name, angle):
     cid = ham_int.send_command(TILT_MOVE, ModuleName = module_name, Angle = angle)
     ham_int.wait_on_response(cid, raise_first_exception=True, timeout=120)
 
-def get_plate_gripper_seq(ham, source_plate_seq,  gripHeight, gripWidth, openWidth, lid, tool_sequence, **more_options):
+def get_plate_gripper_seq(ham, source_plate_seq, tool_sequence, lid=False, **more_options):
     logging.info('get_plate: Getting plate ' + source_plate_seq )
     
     if lid:
-        cid = ham.send_command(GRIP_GET, plateSequence=source_plate_seq, transportMode=1, gripHeight=gripHeight, gripWidth=gripWidth, widthBefore=openWidth, toolSequence=tool_sequence)
+        cid = ham.send_command(GRIP_GET, plateSequence=source_plate_seq, transportMode=1, toolSequence=tool_sequence, **more_options)
     else:
-        cid = ham.send_command(GRIP_GET, plateSequence=source_plate_seq, transportMode=0, gripHeight=gripHeight, gripWidth=gripWidth, widthBefore=openWidth, toolSequence=tool_sequence)
+        cid = ham.send_command(GRIP_GET, plateSequence=source_plate_seq, transportMode=0, toolSequence=tool_sequence, **more_options)
     ham.wait_on_response(cid, raise_first_exception=True, timeout=120)
 
 def move_plate_gripper_seq(ham, dest_plate_seq, **more_options):
