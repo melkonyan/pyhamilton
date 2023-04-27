@@ -854,6 +854,19 @@ defaults_by_cmd = { # 'field':None indicates field is required when assembling c
         'DoorAction':'', # (bool)
     }),
 
+    'BioTekGen5_ExperimentOpen': ('BIOTEKGEN5_EXPERIMENT_OPEN', {
+        'ExperimentPath': '', # (string)
+    }),
+
+    'BioTekGen5_ReadPlate': ('BIOTEKGEN5_READ_PLATE', {
+    }),
+
+    'BioTekGen5_PlateDataExport': ('BIOTEKGEN5_PLATE_DATA_EXPORT', {
+        'ExportPath': '', # (string)
+    }),
+
+    
+
 }
 
 
