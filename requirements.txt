@@ -1,5 +1,0 @@
-requests
-parse
-pythonnet --pre
-pyserial
-waiter
