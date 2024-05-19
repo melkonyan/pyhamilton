@@ -10,7 +10,10 @@ from .interface import (HHS_BEGIN_MONITORING, HHS_CREATE_STAR_DEVICE, HHS_CREATE
     HHS_START_ALL_SHAKER_TIMED, HHS_START_SHAKER, HHS_START_SHAKER_TIMED, HHS_START_TEMP_CTRL, HHS_STOP_ALL_SHAKER,
     HHS_STOP_SHAKER, HHS_STOP_TEMP_CTRL, HHS_TERMINATE, HHS_WAIT_FOR_SHAKER, HHS_WAIT_FOR_TEMP_CTRL)
 
-std_timeout = 5
+std_timeout = 30
+
+SHAKER_DIRECTION_CLOCKWISE = 0
+SHAKER_DIRECTION_COUNTERCLOCKWISE = 1
 
 def hhs_begin_monitoring(ham, device_number, tolerance_range, interval, action):
     cmd = ham.send_command(HHS_BEGIN_MONITORING, deviceNumber = device_number, \
@@ -27,6 +30,7 @@ def hhs_create_star_device(ham, used_node, star_device='ML_STAR'):
 
 
 def hhs_create_usb_device(ham, used_node):
+    """Connects to the shaker and returns device number that can be used for subsequent communication."""
     cmd = ham.send_command(HHS_CREATE_USB_DEVICE, usedNode = used_node)
     response = ham.wait_on_response(cmd, raise_first_exception=True, timeout=std_timeout, return_data=['step-return2'])
     device_number = response.return_data[0]
@@ -82,28 +86,19 @@ def hhs_get_temp_state(ham, device_number):
     temp_state = response.return_data[0]
     return temp_state
 
-
-
-
-
-
-
-
 def hhs_send_firmware_cmd(ham, device_number, command, parameter):
     '''*** ValueError: Assert valid command "HHS_SendFirmwareCommand" failed: command name "TA" does not match
         Probably need to get example commands from Hamilton'''
     cmd = ham.send_command(HHS_SEND_FIRMWARE_CMD, deviceNumber=device_number, command=command, parameter=parameter)
     ham.wait_on_response(cmd, raise_first_exception=True, timeout=std_timeout)
 
-
-
 def hhs_set_plate_lock(ham, device_number, plate_lock):
     cmd = ham.send_command(HHS_SET_PLATE_LOCK, deviceNumber=device_number, plateLock=plate_lock)
     ham.wait_on_response(cmd, raise_first_exception=True, timeout=std_timeout)
 
-def hhs_set_shaker_param(ham, device_number, shaking_direction, shaking_acc_ramp):
+def hhs_set_shaker_param(ham, device_number, shaking_direction=SHAKER_DIRECTION_CLOCKWISE, shaking_acc_ram=1250):
     cmd = ham.send_command(HHS_SET_SHAKER_PARAM, deviceNumber=device_number, shakingDirection=shaking_direction, \
-            shakingAccRamp=shaking_acc_ramp)
+            shakingAccRamp=shaking_acc_ram)
     ham.wait_on_response(cmd, raise_first_exception=True, timeout=std_timeout)
 
 def hhs_set_simulation(ham, simulate):

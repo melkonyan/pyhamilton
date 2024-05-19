@@ -47,7 +47,7 @@ defaults_by_cmd = { # 'field':None indicates field is required when assembling c
         'liquidClass':None, # (string)
         'sequenceCounting':0, # (integer) 0=don´t autoincrement,  1=Autoincrement
         'channelUse':1, # (integer) 1=use all sequence positions (no empty wells), 2=keep channel pattern
-        'aspirateMode':0, # (integer) 0=Normal Aspiration, 1=Consecutive (don´t aspirate blowout), 2=Aspirate all 
+        'aspirateMode':0, # (integer) 0=Normal Aspiration, 1=Consecutive (don´t aspirate blowout), 2=Aspirate all
         'capacitiveLLD':0, # (integer) 0=Off, 1=Max, 2=High, 3=Mid, 4=Low, 5=From labware definition
         'pressureLLD':0, # (integer) 0=Off, 1=Max, 2=High, 3=Mid, 4=Low, 5=From liquid class definition
         'liquidFollowing':0, # (integer) 0=Off , 1=On
@@ -87,9 +87,11 @@ defaults_by_cmd = { # 'field':None indicates field is required when assembling c
         'airTransportRetractDist':10.0, # (float) mm to move up in Z after finishing the dispense at a fixed height before aspirating 'transport air'
         'touchOff':0, # (integer) 0=Off , 1=On
         'dispPositionAboveTouch':0.0, # (float) mm to move up in Z after touch off detects the bottom, before dispense
-        'zMoveAfterStep':0, # (integer) 0=normal, 1=Minimized (Attention!!! this depends on labware clearance height, can crash). 
+        'zMoveAfterStep':0, # (integer) 0=normal, 1=Minimized (Attention!!! this depends on labware clearance height, can crash).
         'sideTouch':0 # (integer) 0=Off , 1=On
     }),
+
+    ''
 
     'mph96TipPickUp':('PICKUP96', {
         'tipSequence':'', # (string) leave empty if you are going to provide specific labware-positions below
@@ -106,7 +108,8 @@ defaults_by_cmd = { # 'field':None indicates field is required when assembling c
         'sequenceCounting':0, # (integer)  0=don´t autoincrement,  1=Autoincrement.  Value omitted if ejecting to default waste
         'tipEjectToKnownPosition':0 # (integer) 0=Eject to specified sequence position,  1=Eject on tip pick up position, 2=Eject on default waste
     }),
-
+    'channelMaintenance':('MAINTENANCE', {
+    }),
     'mph96Aspirate':('ASPIRATE96', {
         'aspirateSequence':'', # (string) leave empty if you are going to provide specific labware-positions below
         'labwarePositions':'', # (string) leave empty if you are going to provide a sequence name above. LabwareId1, positionId1; LabwareId2,positionId2; ....
@@ -114,7 +117,7 @@ defaults_by_cmd = { # 'field':None indicates field is required when assembling c
         'channelVariable':_channel_patt_96, # (string) channel Variable e.g. "11110000...." . Must contain 96 values
         'liquidClass':None, # (string)
         'sequenceCounting':0, # (integer)  0=don´t autoincrement,  1=Autoincrement
-        'aspirateMode':0, # (integer) 0=Normal Aspiration, 1=Consecutive (don´t aspirate blowout), 2=Aspirate all 
+        'aspirateMode':0, # (integer) 0=Normal Aspiration, 1=Consecutive (don´t aspirate blowout), 2=Aspirate all
         'capacitiveLLD':0, # (integer) 0=Off, 1=Max, 2=High, 3=Mid, 4=Low, 5=From labware definition
         'liquidFollowing':0, # (integer) 0=Off , 1=On
         'submergeDepth':2.0, # (float) mm of immersion below liquid´s surface to start aspiration when using LLD
@@ -130,7 +133,7 @@ defaults_by_cmd = { # 'field':None indicates field is required when assembling c
         'labwarePositions':'', # (string) leave empty if you are going to provide a sequence name above. LabwareId1, positionId1; LabwareId2,positionId2; ....
         'dispenseVolume':None, # (float) single volume used for all channels in the head. There´s no individual control of each channel volume in multi-probe heads.
         'channelVariable':_channel_patt_96, # (string) channel Variable e.g. "11110000...." . Must contain 96 values
-        'liquidClass':None, # (string) 
+        'liquidClass':None, # (string)
         'sequenceCounting':0, # (integer)  0=don´t autoincrement,  1=Autoincrement
         'dispenseMode':8, # (integer) 0=Jet Part, 1=Jet Empty, 2=Surface Part, 3=Surface Empty,4=Jet Drain tip, 8=From liquid class, 9=Blowout tip
         'capacitiveLLD':0, # (integer) 0=Off, 1=Max, 2=High, 3=Mid, 4=Low, 5=From labware definition
@@ -141,15 +144,15 @@ defaults_by_cmd = { # 'field':None indicates field is required when assembling c
         'mixPosition':0.0, # (float)  additional immersion mm below dispense position to start mixing
         'mixVolume':0.0, # (float)  mix volume
         'airTransportRetractDist':10.0, # (float) mm to move up in Z after finishing the dispense at a fixed height before aspirating 'transport air'
-        'zMoveAfterStep':0, # (integer) 0=normal, 1=Minimized (Attention!!! this depends on labware clearance height, can crash). 
+        'zMoveAfterStep':0, # (integer) 0=normal, 1=Minimized (Attention!!! this depends on labware clearance height, can crash).
         'sideTouch':0 # (integer) 0=Off , 1=On
     }),
 
     'iSwapGet':('ISWAP_GET', {
         'plateSequence':'', # leave empty if you are going to provide specific plate labware-position below
-        'plateLabwarePositions':'', # leave empty if you are going to provide a plate sequence name above. LabwareId1, positionId1; 
+        'plateLabwarePositions':'', # leave empty if you are going to provide a plate sequence name above. LabwareId1, positionId1;
         'lidSequence':'', # leave empty if you don´t use lid or if you are going to provide specific plate labware-positions below or ejecting to default waste
-        'lidLabwarePositions':'', # leave empty if you are going to provide a plate sequence name above. LabwareId1, positionId1; 
+        'lidLabwarePositions':'', # leave empty if you are going to provide a plate sequence name above. LabwareId1, positionId1;
         'toolSequence':'', # sequence name of the iSWAP. leave empty if you are going to provide a plate sequence name above. LabwareId1, positionId1;
         'sequenceCounting':0, # (integer) 0=don´t autoincrement plate sequence,  1=Autoincrement
         'movementType':0, # (integer) 0=To carrier, 1=Complex movement
@@ -169,9 +172,9 @@ defaults_by_cmd = { # 'field':None indicates field is required when assembling c
 
     'iSwapPlace':('ISWAP_PLACE', {
         'plateSequence':'', # leave empty if you are going to provide specific plate labware-position below
-        'plateLabwarePositions':'', # leave empty if you are going to provide a plate sequence name above. LabwareId1, positionId1; 
+        'plateLabwarePositions':'', # leave empty if you are going to provide a plate sequence name above. LabwareId1, positionId1;
         'lidSequence':'', # leave empty if you don´t use lid or if you are going to provide specific plate labware-positions below or ejecting to default waste
-        'lidLabwarePositions':'', # leave empty if you are going to provide a plate sequence name above. LabwareId1, positionId1; 
+        'lidLabwarePositions':'', # leave empty if you are going to provide a plate sequence name above. LabwareId1, positionId1;
         'toolSequence':'', # sequence name of the iSWAP. leave empty if you are going to provide a plate sequence name above. LabwareId1, positionId1;
         'sequenceCounting':0, # (integer) 0=don´t autoincrement plate sequence,  1=Autoincrement
         'movementType':0, # (integer) 0=To carrier, 1=Complex movement
@@ -205,9 +208,9 @@ defaults_by_cmd = { # 'field':None indicates field is required when assembling c
 
     'gripGet':('GRIP_GET', {
         'plateSequence':'', # leave empty if you are going to provide specific plate labware-position below
-        'plateLabwarePositions':'', # leave empty if you are going to provide a plate sequence name above. LabwareId1, positionId1; 
+        'plateLabwarePositions':'', # leave empty if you are going to provide a plate sequence name above. LabwareId1, positionId1;
         'lidSequence':'', # leave empty if you don´t use lid or if you are going to provide specific plate labware-positions below or ejecting to default waste
-        'lidLabwarePositions':'', # leave empty if you are going to provide a plate sequence name above. LabwareId1, positionId1; 
+        'lidLabwarePositions':'', # leave empty if you are going to provide a plate sequence name above. LabwareId1, positionId1;
         'toolSequence':'COREGripTool', # sequence name of the CO-RE Gripper
         'gripForce':3, # (integer) 0-9, from lowest to highest
         'gripperToolChannel':8, # specifies the higher of two consecutive integers representing the CO-RE gripper channels.
@@ -218,7 +221,7 @@ defaults_by_cmd = { # 'field':None indicates field is required when assembling c
         'gripSpeed':5.0, # (float) mm/s. Must be supplied
         'zSpeed':50.0, # (float) mm/s. Must be supplied
         'transportMode':0, # (integer) 0=Plate only, 1=Lid only ,2=Plate with lid
-        'checkPlate':0 # (integer) 
+        'checkPlate':0 # (integer)
     }),
 
     'gripMove':('GRIP_MOVE', {
@@ -233,9 +236,9 @@ defaults_by_cmd = { # 'field':None indicates field is required when assembling c
 
     'gripPlace':('GRIP_PLACE', {
         'plateSequence':'', # leave empty if you are going to provide specific plate labware-position below
-        'plateLabwarePositions':'', # leave empty if you are going to provide a plate sequence name above. LabwareId1, positionId1; 
+        'plateLabwarePositions':'', # leave empty if you are going to provide a plate sequence name above. LabwareId1, positionId1;
         'lidSequence':'', # leave empty if you don´t use lid or if you are going to provide specific plate labware-positions below or ejecting to default waste
-        'lidLabwarePositions':'', # leave empty if you are going to provide a plate sequence name above. LabwareId1, positionId1; 
+        'lidLabwarePositions':'', # leave empty if you are going to provide a plate sequence name above. LabwareId1, positionId1;
         'toolSequence':'COREGripTool', # sequence name of the iSWAP. leave empty if you are going to provide a plate sequence name above. LabwareId1, positionId1;
         'sequenceCounting':0, # (integer) 0=don´t autoincrement plate sequence,  1=Autoincrement
         'movementType':0, # (integer) 0=To carrier, 1=Complex movement
@@ -255,23 +258,23 @@ defaults_by_cmd = { # 'field':None indicates field is required when assembling c
     'TEC_Initialize':('TEC_INIT', {
 
         'ControllerID':'', # (integer)
-        'SimulationMode':False, # 0=False, 1=True; 
+        'SimulationMode':False, # 0=False, 1=True;
     }),
     'TEC_StartTempControl':('TEC_START', {
 
         'ControllerID':'', # (integer)
-        'DeviceID':'', # (integer); 
+        'DeviceID':'', # (integer);
     }),
 
     'TEC_SetTarget':('TEC_SET_TARGET', {
         'ControllerID':'', # (integer)
-        'DeviceID':'', # (integer); 
-        'TargetTemperature':'', # (float); 
+        'DeviceID':'', # (integer);
+        'TargetTemperature':'', # (float);
     }),
     'TEC_StopTemperatureControl':('TEC_STOP', {
 
         'ControllerID':'', # (integer)
-        'DeviceID':'', # (integer); 
+        'DeviceID':'', # (integer);
     }),
     'TEC_Terminate':('TEC_TERMINATE', {
 
@@ -291,7 +294,7 @@ defaults_by_cmd = { # 'field':None indicates field is required when assembling c
     }),
     'FirmwareCommand':('FIRMWARECOMMAND', {
 
-        'FirmwareCommandList':[], # list elements as {FirmwareCommand:'', FirmwareParameter:''} 
+        'FirmwareCommandList':[], # list elements as {FirmwareCommand:'', FirmwareParameter:''}
     }),
     'BarcodeReader_Initialize':('BC_INITIALIZE',{
 
@@ -346,7 +349,7 @@ defaults_by_cmd = { # 'field':None indicates field is required when assembling c
         'CalibrationTemperature' : '' , # (flt)
         'probePattern' : '' , # (str)
     }),
-    
+
     'pH_Sleep':('PH_SLEEP',{
         'ModuleID' : '' , # (int)
     }),
@@ -356,7 +359,7 @@ defaults_by_cmd = { # 'field':None indicates field is required when assembling c
     'pH_Wakeup':('PH_WAKEUP',{
         'ModuleID' : '' , # (int)
     }),
-    
+
     'pH_Washer_Initialize':('PH_WASHER_INIT',{
         'Comport' : '' , # (int)
         'SimulationMode' : '' , # (bln)
@@ -389,7 +392,7 @@ defaults_by_cmd = { # 'field':None indicates field is required when assembling c
     'pH_Dryer_Terminate':('PH_DRYER_TERM',{
         'ModuleID' : '' , # (int)
     }),
-    
+
     'HHS_BeginMonitoring':('HHS_BEGIN_MONITORING',{
         'deviceNumber' : '' , # (int)
         'shakingToleranceRange' : '' , # (int)
@@ -492,38 +495,38 @@ defaults_by_cmd = { # 'field':None indicates field is required when assembling c
     }),
     'ODTC_Abort':('ODTC_ABORT', {
         'DeviceID':'', # (integer)
-        'LockID':'', # (integer); 
+        'LockID':'', # (integer);
     }),
     'ODTC_Connect':('ODTC_CONNECT', {
         'LocalIP':'', # (string)
         'DeviceIP':'', # (string)
         'DevicePort':'', # (string)
         'SimulationMode':'', # (boolean)
-        
+
     }),
     'ODTC_Initialize':('ODTC_INIT', {
         'DeviceID':'', # (integer)
-        'LockID':'', # (string); 
+        'LockID':'', # (string);
     }),
     'ODTC_CloseDoor':('ODTC_CLOSE', {
         'DeviceID':'', # (integer)
-        'LockID':'', # (string); 
+        'LockID':'', # (string);
     }),
     'ODTC_DownloadProtocol':('ODTC_PRTCL', {
         'DeviceID':'', # (integer)
-        'LockID':'', # (string); 
+        'LockID':'', # (string);
         'ProtocolFile':'',
     }),
     'ODTC_EvaluateError':('ODTC_EVAL', {
         'DeviceID':'', # (integer)
-        'LockID':'', # (string); 
+        'LockID':'', # (string);
     }),
     'ODTC_ExecuteMethod':('ODTC_EXCT', {
         'DeviceID':'', # (integer)
         'LockID':'', # (string);
-        'LockID':'', # (string); 
+        'LockID':'', # (string);
         'MethodName':'', # (string)
-        'Priority':'', # (integer); 
+        'Priority':'', # (integer);
     }),
     'ODTC_GetStatus':('ODTC_STATUS', {
         'DeviceID':'', # (integer)
@@ -534,11 +537,11 @@ defaults_by_cmd = { # 'field':None indicates field is required when assembling c
     }),
     'ODTC_ReadActualTemperature':('ODTC_READ', {
         'DeviceID':'', # (integer)
-        'LockID':'', # (string); 
+        'LockID':'', # (string);
     }),
     'ODTC_Reset':('ODTC_RESET', {
         'DeviceID':'', # (integer)
-        'LockID':'', # (string); 
+        'LockID':'', # (string);
         'SimulationMode': '', # (boolean)
         'TimeToWait': '', # 0=False, 1=True
         'strDeviceID': '', # (string)
@@ -546,7 +549,7 @@ defaults_by_cmd = { # 'field':None indicates field is required when assembling c
     }),
     'ODTC_StopMethod':('ODTC_STOP', {
         'DeviceID':'', # (integer)
-        'LockID':'', # (string); 
+        'LockID':'', # (string);
     }),
     'ODTC_Terminate':('ODTC_TERM', {
         'DeviceID':'', # (integer)
@@ -837,7 +840,7 @@ defaults_by_cmd = { # 'field':None indicates field is required when assembling c
     }),
     'pH_Controller_LoadLastConfig':('PHC_LOAD', {
     }),
-    
+
     'pH_Controller_SaveLastConfig':('PHC_SAVE', {
         'BluetoothPort':'', # (int)
         'NumWashCycles':'', # (int)
@@ -845,27 +848,19 @@ defaults_by_cmd = { # 'field':None indicates field is required when assembling c
         'DryTime':'', # (int)
     }),
 
-    'BioTekGen5_Initialize': ('BIOTEKGEN5_INITIALIZE', 
+    'BioTekGen5_Initialize': ('BIOTEKGEN5_INITIALIZE',
         {
-        'Simulate': '', # (bool)
-    }),
-    
-    'BioTekGen5_Door': ('BIOTEKGEN5_DOOR', {
-        'DoorAction':'', # (bool)
+
     }),
 
-    'BioTekGen5_ExperimentOpen': ('BIOTEKGEN5_EXPERIMENT_OPEN', {
-        'ExperimentPath': '', # (string)
+    'BioTekGen5_Door': ('BIOTEKGEN5_DOOR', {
+        'DoorAction':'', # (string)
     }),
 
     'BioTekGen5_ReadPlate': ('BIOTEKGEN5_READ_PLATE', {
-    }),
-
-    'BioTekGen5_PlateDataExport': ('BIOTEKGEN5_PLATE_DATA_EXPORT', {
+        'ExperimentPath': '', # (string)
         'ExportPath': '', # (string)
     }),
-
-    
 
 }
 
@@ -887,7 +882,7 @@ INITIALIZE
 
     0=only initialize components not already initialized, 1=always reinitialize all robot components
 
-    Default: 0 
+    Default: 0
 
 
 
@@ -1013,7 +1008,7 @@ ASPIRATE
 
 - aspirateMode (integer)
 
-    0=Normal Aspiration, 1=Consecutive (don´t aspirate blowout), 2=Aspirate all 
+    0=Normal Aspiration, 1=Consecutive (don´t aspirate blowout), 2=Aspirate all
 
     Default: 0
 
@@ -1205,7 +1200,7 @@ DISPENSE
 
 - zMoveAfterStep (integer)
 
-    0=normal, 1=Minimized (Attention!!! this depends on labware clearance height, can crash). 
+    0=normal, 1=Minimized (Attention!!! this depends on labware clearance height, can crash).
 
     Default: 0
 
@@ -1329,7 +1324,7 @@ ASPIRATE96
 
 - aspirateMode (integer)
 
-    0=Normal Aspiration, 1=Consecutive (don´t aspirate blowout), 2=Aspirate all 
+    0=Normal Aspiration, 1=Consecutive (don´t aspirate blowout), 2=Aspirate all
 
     Default: 0
 
@@ -1477,7 +1472,7 @@ DISPENSE96
 
 - zMoveAfterStep (integer)
 
-    0=normal, 1=Minimized (Attention!!! this depends on labware clearance height, can crash). 
+    0=normal, 1=Minimized (Attention!!! this depends on labware clearance height, can crash).
 
     Default: 0
 
@@ -1501,7 +1496,7 @@ plateSequence
 
 - plateLabwarePositions (string)
 
-    leave empty if you are going to provide a plate sequence name above. LabwareId1, positionId1; 
+    leave empty if you are going to provide a plate sequence name above. LabwareId1, positionId1;
 
     Default: ''
 
@@ -1513,7 +1508,7 @@ plateSequence
 
 - lidLabwarePositions (string)
 
-    leave empty if you are going to provide a plate sequence name above. LabwareId1, positionId1; 
+    leave empty if you are going to provide a plate sequence name above. LabwareId1, positionId1;
 
     Default: ''
 
@@ -1615,7 +1610,7 @@ ISWAP_PLACE
 
 - plateLabwarePositions (string)
 
-    leave empty if you are going to provide a plate sequence name above. LabwareId1, positionId1; 
+    leave empty if you are going to provide a plate sequence name above. LabwareId1, positionId1;
 
     Default: ''
 
@@ -1627,7 +1622,7 @@ ISWAP_PLACE
 
 - lidLabwarePositions (string)
 
-    leave empty if you are going to provide a plate sequence name above. LabwareId1, positionId1; 
+    leave empty if you are going to provide a plate sequence name above. LabwareId1, positionId1;
 
     Default: ''
 
@@ -1701,7 +1696,7 @@ HEPA
 
     0=normal mode, 1=use HxFan simulation mode
 
-    Default: 0 
+    Default: 0
 
 
 

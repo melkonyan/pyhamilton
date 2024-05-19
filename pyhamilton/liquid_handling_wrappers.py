@@ -8,10 +8,11 @@ Created on Wed Mar  9 12:01:01 2022
 import sys, os, time, logging, importlib
 from threading import Thread
 
+import json
 from .interface import HamiltonInterface
 from .deckresource import LayoutManager, ResourceType, Plate24, Plate96, Tip96
 from .oemerr import PositionError
-from .interface import (INITIALIZE, PICKUP, EJECT, ASPIRATE, DISPENSE, ISWAP_GET, ISWAP_PLACE, HEPA,
+from .interface import (INITIALIZE, PICKUP, EJECT, ASPIRATE, DISPENSE, MAINTENANCE, ISWAP_GET, ISWAP_PLACE, HEPA,
 WASH96_EMPTY, PICKUP96, EJECT96, ASPIRATE96, DISPENSE96, ISWAP_MOVE, MOVE_SEQ, TILT_INIT, TILT_MOVE, GRIP_GET,
 GRIP_MOVE, GRIP_PLACE)
 
@@ -181,6 +182,7 @@ default_liq_class = 'HighVolumeFilter_Water_DispenseJet_Empty_with_transport_vol
 
 
 def aspirate(ham_int, pos_tuples, vols, **more_options):
+    """ If pressureLLD or capacitiveLLD is provided, will return measured liquid height **before** aspiration """
     assert_parallel_nones(pos_tuples, vols)
     logging.info('aspirate: Aspirate volumes ' + str(vols) + ' from positions [' +
             '; '.join((labware_pos_str(*pt) if pt else '(skip)' for pt in pos_tuples)) +
@@ -189,11 +191,14 @@ def aspirate(ham_int, pos_tuples, vols, **more_options):
         raise ValueError('Can only aspirate with 8 channels at a time')
     if 'liquidClass' not in more_options:
         more_options.update({'liquidClass':default_liq_class})
-    ham_int.wait_on_response(ham_int.send_command(ASPIRATE,
+    response = ham_int.wait_on_response(ham_int.send_command(ASPIRATE,
         channelVariable=channel_var(pos_tuples),
         labwarePositions=compound_pos_str(pos_tuples),
         volumes=[v for v in vols if v is not None],
         **more_options), raise_first_exception=True)
+    lld_h = json.loads(response.raw)['step-return3']
+    lld_h = [float(mm) for mm in lld_h.split(';')]
+    return lld_h
 
 def dispense(ham_int, pos_tuples, vols, **more_options):
     assert_parallel_nones(pos_tuples, vols)
@@ -204,11 +209,15 @@ def dispense(ham_int, pos_tuples, vols, **more_options):
         raise ValueError('Can only aspirate with 8 channels at a time')
     if 'liquidClass' not in more_options:
         more_options.update({'liquidClass':default_liq_class})
-    ham_int.wait_on_response(ham_int.send_command(DISPENSE,
+    return ham_int.wait_on_response(ham_int.send_command(DISPENSE,
         channelVariable=channel_var(pos_tuples),
         labwarePositions=compound_pos_str(pos_tuples),
         volumes=[v for v in vols if v is not None],
         **more_options), raise_first_exception=True)
+
+def tightness_check(ham_int, timeout=300, **more_options):
+    return ham_int.wait_on_response(ham_int.send_command(MAINTENANCE, **more_options), 
+                                    raise_first_exception=True, timeout=timeout)
 
 def tip_pick_up_96(ham_int, tip96, **more_options):
     logging.info('tip_pick_up_96: Pick up tips at ' + tip96.layout_name() +
@@ -271,19 +280,21 @@ def get_plate_gripper_seq(ham, source_plate_seq, tool_sequence, lid=False, **mor
     logging.info('get_plate: Getting plate ' + source_plate_seq )
     
     if lid:
-        cid = ham.send_command(GRIP_GET, plateSequence=source_plate_seq, transportMode=1, toolSequence=tool_sequence, **more_options)
+        cid = ham.send_command(GRIP_GET, plateSequence=source_plate_seq, transportMode=1, 
+                               toolSequence=tool_sequence, **more_options)
     else:
-        cid = ham.send_command(GRIP_GET, plateSequence=source_plate_seq, transportMode=0, toolSequence=tool_sequence, **more_options)
+        cid = ham.send_command(GRIP_GET, plateSequence=source_plate_seq, transportMode=0, 
+                               toolSequence=tool_sequence, **more_options)
     ham.wait_on_response(cid, raise_first_exception=True, timeout=120)
 
 def move_plate_gripper_seq(ham, dest_plate_seq, **more_options):
     logging.info('move_plate: Moving plate ' + dest_plate_seq)
-    cid = ham.send_command(GRIP_MOVE, plateSequence=dest_plate_seq)
+    cid = ham.send_command(GRIP_MOVE, plateSequence=dest_plate_seq, **more_options)
     ham.wait_on_response(cid, raise_first_exception=True, timeout=120)
     
 def place_plate_gripper_seq(ham, dest_plate_seq, tool_sequence, **more_options):
     logging.info('place_plate: Placing plate ' + dest_plate_seq )
-    cid = ham.send_command(GRIP_PLACE, plateSequence=dest_plate_seq, toolSequence=tool_sequence)
+    cid = ham.send_command(GRIP_PLACE, plateSequence=dest_plate_seq, toolSequence=tool_sequence, **more_options)
     ham.wait_on_response(cid, raise_first_exception=True, timeout=120)
 
 def move_plate_gripper(ham, dest_poss, **more_options):

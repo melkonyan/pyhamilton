@@ -89,9 +89,7 @@ class HamiltonCmdTemplate:
             raise ValueError(prefix + 'command name "' + cmd_dict['command'] + '" does not match')
         needs = set(['command', 'id'])
         needs.update(self.params_list)
-        print(needs)
         givens = set(cmd_dict.keys())
-        print(givens)
         if givens != needs:
             prints = [prefix + 'template parameter keys (left) do not match given keys (right)\n']
             q_mark = ' (?)  '
@@ -373,7 +371,6 @@ class HamiltonResponse:
         blocks = [r for r in response.split('[')[1:]]
         if not blocks:
             return None
-
         parsed = [
             parse(
                 ",".join(field_names[:block.count(',') + 1]),
@@ -396,7 +393,7 @@ class HamiltonResponse:
         isSuccessStatus = self.status == HamiltonResponseStatus.SUCCESS and '[' not in self.raw
         if isSuccessStatus:
             return
-        
+
         isHamiltonStepError = self.status == HamiltonResponseStatus.FAILED and '[' not in self.raw
         if isHamiltonStepError:
             raise HamiltonStepError('Hamilton step did not execute correctly; no error code given. ( response: ' + self.raw + ' )')
@@ -482,7 +479,7 @@ class HamiltonInterface:
         def has_exited(self):
             return self.exited
 
-    def __init__(self, address=None, port=None, simulate=False, debug=False):
+    def __init__(self, address=None, port=None, simulate=False, debug=False, run_hamilton_process=True):
         self.address = HamiltonInterface.default_address if address is None else address
         self.port = HamiltonInterface.default_port if port is None else port
         self.simulate = simulate
@@ -491,6 +488,7 @@ class HamiltonInterface:
         self.oem_process = None
         self.active = False
         self.logger = None
+        self.run_hamilton_process = run_hamilton_process
         self.log_queue = []
 
     def start(self):
@@ -506,6 +504,16 @@ class HamiltonInterface:
 
         if self.active:
             return
+        if self.run_hamilton_process:
+            self.start_hamilton()
+        else:
+            self.log('not starting the Hamilton process')
+        self.server_thread = HamiltonInterface.HamiltonServerThread(self.address, self.port)
+        self.server_thread.start()
+        self.log('started the server thread')
+        self.active = True
+
+    def start_hamilton(self):
         self.log('starting a Hamilton interface')
         if self.simulate:
             subprocess.Popen([OEM_RUN_EXE_PATH, OEM_HSL_PATH])
@@ -514,10 +522,6 @@ class HamiltonInterface:
             self.oem_process = Process(target=run_hamilton_process, args=())
             self.oem_process.start()
             self.log('started the oem process')
-        self.server_thread = HamiltonInterface.HamiltonServerThread(self.address, self.port)
-        self.server_thread.start()
-        self.log('started the server thread')
-        self.active = True
 
     def stop(self):
         """Stop this HamiltonInterface and clean up associated async processes.
@@ -649,13 +653,13 @@ class HamiltonInterface:
             server_response = self.server_thread.server_handler_class.pop_response(id)
             if server_response is not None:
                 break
-            
+
         if server_response is None:
             self.log_and_raise(HamiltonTimeoutError('Timed out after ' + str(timeout) + ' sec while waiting for response id ' + str(id)))
-        
+
         if self.debug:
             print(server_response)
-        
+
         return self.parse_response(server_response, raise_first_exception, return_data)
 
     def parse_response(self, server_response:str, raise_first_exception:bool=False, return_data:"list|str"=None):

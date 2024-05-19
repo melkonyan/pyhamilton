@@ -65,13 +65,13 @@ class HamiltonSyntaxError(HamiltonStepError):
     There is a wrong set of parameters or parameter ranges.
     """
     pass
- 
+
 class HardwareError(HamiltonStepError):
     """
     Steps lost on one or more hardware components, or component not initialized or not functioning.
     """
     pass
- 
+
 class NotExecutedError(HamiltonStepError):
     """
     There was an error in previous part command.
@@ -312,7 +312,7 @@ class NotAspiratedError(HamiltonStepError):
 
 class ImproperDispensationError(HamiltonStepError):
     """
-    The dispensed volume is out of tolerance (may only occur for Nano Pipettor Dispense steps). 
+    The dispensed volume is out of tolerance (may only occur for Nano Pipettor Dispense steps).
 
     This error is created from main / slave error 02/52 and 02/54.
     """
@@ -371,7 +371,11 @@ class DelimiterError(HamiltonStepError):
     pass
 
 
-HAMILTON_ERROR_MAP = { 
+class PlateReaderError(HamiltonStepError):
+    pass
+
+
+HAMILTON_ERROR_MAP = {
     1: HamiltonSyntaxError,
     2: HardwareError,
     3: NotExecutedError,
@@ -419,7 +423,8 @@ HAMILTON_ERROR_MAP = {
     110: BarcodeNotUniqueError,
     111: BarcodeAlreadyUsedError,
     112: KitLotExpiredError,
-    113: DelimiterError
+    113: DelimiterError,
+    200: PlateReaderError
 }
 """
 Maps integer error codes from Hamilton step return data to the appropriate `pyhamilton` errors

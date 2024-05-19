@@ -8,7 +8,6 @@ from datetime import datetime
 from pyhamilton import OEM_LAY_PATH, LAY_BACKUP_DIR
 from .oemerr import ResourceUnavailableError
 
-
 class ResourceType:
     """
     Specifies a type of labware to extract using LayoutManager, and how.
@@ -304,9 +303,54 @@ class DeckResource:
         return self._alignment_delta(args['start'], args['end'])
 
     def __iter__(self):
-        for i in self._items:
+        for i in self[:, :]:
             yield i
+    
+    def __repr__(self):
+        return self.layout_name()
+    
+    @property
+    def rows(self):
+        raise NotImplementedError("Subclass must implement the 'rows' property")
 
+    @property
+    def columns(self):
+        raise NotImplementedError("Subclass must implement the 'columns' property")
+
+    @property
+    def size(self):
+        return (self.rows, self.columns)
+    
+    def __getitem__(self, index):
+        row, col = index
+
+        if isinstance(row, slice) or isinstance(col, slice):
+            row_indices = range(*row.indices(self.rows)) if isinstance(row, slice) else [row]
+            col_indices = range(*col.indices(self.columns)) if isinstance(col, slice) else [col]
+
+            result = []
+            for r in row_indices:
+                for c in col_indices:
+                    if r < 0:
+                        r = r % self.rows
+                    if c < 0:
+                        c = c % self.columns
+                    linear_index = c * self.rows + r
+                    result.append((self, linear_index))
+            return result
+        else:
+            if row < 0:
+                row = row % self.rows
+            if col < 0:
+                col = col % self.columns
+
+            if row >= self.rows or col >= self.columns:
+                raise IndexError("Index out of range")
+
+            linear_index = col * self.rows + row
+            return (self, linear_index)
+
+   
 
 class Standard96(DeckResource):
     """Labware types with 96 positions that use a letter-number id scheme like `'A1'`.
@@ -326,6 +370,14 @@ class Standard96(DeckResource):
     def position_id(self, idx):
         x, y = self.well_coords(idx)
         return 'ABCDEFGH'[y] + str(x + 1)
+    
+    @property
+    def rows(self):
+        return 8
+
+    @property
+    def columns(self):
+        return 12
 
 
 class Tip96(Standard96):
@@ -371,7 +423,7 @@ class Plate24(DeckResource):
     def position_id(self, idx):
         x, y = self.well_coords(idx)
         return 'ABCD'[y] + str(x + 1)
-
+    
 
 class Plate12(DeckResource):
 
