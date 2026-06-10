@@ -114,7 +114,6 @@ variable movementType;
 variable collisionControl;
 variable gripMode;
 variable showCollisionCheckDialog;
-global device HxFan ("STAR_OEM_Test.lay", "HxFan", hslTrue);
 variable fanSpeed;
 variable persistant;
 variable refillAfterEmpty;
@@ -158,7 +157,7 @@ return;
 }
 // }} ""
 // {{{ 6 1 0 "ee92e29b_e94c_46cf_a67851f3be61c805" "{7C4EF7A7-39BE-406a-897F-71F3A35B4093}"
-SendTextMessageToServer(Translate("Hi, I�m a VENUS method."));
+SendTextMessageToServer(Translate("Hi, Iï¿½m a VENUS method."));
 // }} ""
 // {{ 7 1 0 "b573bcbb_6bb4_4b28_b1ca14b0d3cad22e" "{B31F3532-5D80-11d4-A5EB-0050DA737D89}"
 {
@@ -2263,7 +2262,7 @@ err.Clear();
 // {{ 656 1 0 "d7ecab6c_533b_4d98_97e3fd144551f6d2" "{B31F3543-5D80-11d4-A5EB-0050DA737D89}"
 o_stepReturn = 0;
 // }} ""
-// {{{ 657 1 0 "77463ac5_e629_4772_98004edef4016a6a" "{C1F3C015-47B3-4514-9407-AC2E65043419}"
+// {{{ 657 1 0 "f8e7a07d_1fae_40fb_aa7aa1688a932b0b" "{C1F3C015-47B3-4514-9407-AC2E65043419}"
 HSLHamHeaterShaker::SetShakerParameter(deviceNumber, shakingDirection, shakingAccRamp);
 // }} ""
 // {{ 658 1 0 "becef32e_bdce_4400_816bdb42c51ffae8" "{3293659E-F71E-472f-AFB4-6A674E32B114}"
@@ -2524,8 +2523,8 @@ err.Clear();
 // {{ 733 1 0 "7e6d8299_fab6_4435_8adf36d59ca04c7a" "{B31F3543-5D80-11d4-A5EB-0050DA737D89}"
 o_stepReturn = 0;
 // }} ""
-// {{{ 734 1 0 "5fe75151_d308_441e_a049e85f45ca3966" "{C1F3C015-47B3-4514-9407-AC2E65043419}"
-o_stepReturn = HSLHamHeaterShaker::StartShaker(dispenseMode, shakingSpeed);
+// {{{ 734 1 0 "7265aa36_bcad_4e9d_931210a68b9f21fd" "{C1F3C015-47B3-4514-9407-AC2E65043419}"
+o_stepReturn = HSLHamHeaterShaker::StartShaker(deviceNumber, shakingSpeed);
 // }} ""
 // {{ 735 1 0 "25553bc8_2d53_47af_af9e6ada77cb8dfe" "{3293659E-F71E-472f-AFB4-6A674E32B114}"
 errLabel_264F4A7DEA214bd38D410C3AE5CAF482 : {}
@@ -3108,4 +3107,4 @@ STAR_OEM_TOOLKIT::_ExitLibrary();
 // }} ""
 
 
-// $$author=Hamilton$$valid=0$$time=2019-03-18 18:17$$checksum=14112bd1$$length=085$$
+// $$author=Roboter$$valid=0$$time=2024-04-11 13:07$$checksum=d4af71da$$length=084$$

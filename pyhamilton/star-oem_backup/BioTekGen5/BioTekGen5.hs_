@@ -1,0 +1,31 @@
+
+// this ALWAYS GENERATED file contains the sub-method library header
+// Generated at 20/10/2021 14:10:03
+
+#pragma once
+#ifndef HSL_RUNTIME
+namespace BIOTEKGEN5 {
+function _InitLibrary() { }
+function _ExitLibrary() { }
+function Door( variable i_blnDoorOpen ) variable {  return (0); }
+function ExperimentClose( variable i_blnCloseExperiment ) variable {  return (0); }
+function ExperimentOpen( variable i_blnNewExperiment, variable i_strProtocolPathName, variable i_strExperimentPathName ) variable {  return (0); }
+function ExperimentSave( variable i_strFilePath, variable i_blnCloseExperiment ) variable {  return (0); }
+function GetInformations( variable i_intInformation ) variable {  return (0); }
+function ImportSampleIDs( variable i_strFilePath ) variable {  return (0); }
+function Initialize( variable i_intTraceLevel, variable i_blnSimulation ) void { }
+function PlateAdd( variable i_strPlateID, variable i_strPlateBarcode ) variable {  return (0); }
+function PlateDataExport( variable i_strPath, variable i_intExportType ) variable {  return (0); }
+function PlateDelete(  ) variable {  return (0); }
+function PlateSelect( variable i_intIndex ) variable {  return (0); }
+function PlateSet( variable g_blnSimulationMode, variable i_strPlateID, variable i_strPlateBarcode, variable i_strLayoutXml ) variable {  return (0); }
+function PrintReport( variable g_blnSimulationMode ) variable {  return (0); }
+function ReadPlate( variable i_blnRotatePlate, variable i_blnWaitForReadFinish, variable i_blnResumeReading ) void { }
+function Terminate(  ) variable {  return (0); }
+} // namespace
+#endif
+
+#ifdef HSL_RUNTIME
+#include __filename__ ".hsi"
+#endif
+// $$author=VenusAdmin$$valid=0$$time=2021-10-20 14:10$$checksum=dfd67529$$length=087$$
